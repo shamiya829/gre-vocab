@@ -1,102 +1,35 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GRE 1000 Vocabulary</title>
-    <h1>GRE 1000 Vocabulary</h1>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Ubuntu&display=swap"
-      rel="stylesheet"
-    />
-    <style>
-      body {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        font-family: "Ubuntu", sans-serif;
-      }
-
-      .flashcard {
-        width: 400px;
-        height: 200px;
-        background-color: rgb(240, 237, 237);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        border-radius: 10px;
-        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
-        transition: all 0.2s ease-in-out;
-        cursor: pointer;
-      }
-
-      .flashcard .word {
-        display: block;
-        font-weight: 100;
-      }
-
-      .flashcard .definition {
-        display: none;
-        text-align: center;
-      }
-
-      .flashcard.toggled .word {
-        display: none;
-      }
-
-      .flashcard.toggled .definition {
-        display: block;
-      }
-
-      .flashcard-container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-      }
-
-      button.next-button, button.prev-button {
-        margin-top: 20px;
-        padding: 10px 20px;
-        background-color: steelblue;
-        color: white;
-        border: none;
-        border-radius: 10px;
-        font-size: 16px;
-        cursor: pointer;
-        transition: all 0.2s ease-in-out;
-      }
-
-      button.next-button:hover, button.prev-button:hover {
-        background-color: lightblue;
-        transform: translateY(-2px);
-      }
-
-      button.next-button:active, button.prev-button:active {
-        transform: translateY(2px);
-      }
-    </style>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu&display=swap" rel="stylesheet">
   </head>
   <body>
-    <div class="flashcard-container">
-      <div id="flashcard-container"></div>
-      <button id="next-button" class="next-button">Next</button>
-      <button id="prev-button" class="prev-button">Prev</button>
-
+    <nav>
+      <a href="#">Home</a>
+      <a href="#">Practice</a>
+      <h1>GRE 1000 Vocabulary</h1>
+    </nav>
+    <div id="flashcard-container"></div>
+    <div id="button-container">
+      <button id="previous-button">Previous</button>
+      <button id="next-button">Next</button>
     </div>
 
     <script>
-      const words = [
-        { word: "prevaricator", definition: "a liar or deceiver" },
-        { word: "mendacity", definition: "the state of being untruthful" },
-        { word: "fastidious", definition: "having high standards or being meticulous" },
-        { word: "equanimity", definition: "calmness and composure, especially in difficult situations" },
-        { word: "perfidious", definition: "treacherous or faithless" }
-      ];
-
       const flashcardContainer = document.querySelector("#flashcard-container");
+      const previousButton = document.querySelector("#previous-button");
       const nextButton = document.querySelector("#next-button");
-      const prevButton = document.querySelector("#prev-button");
-
       let currentIndex = 0;
+      const words = [
+        { word: "Word 1", definition: "Definition 1" },
+        { word: "Word 2", definition: "Definition 2" },
+        { word: "Word 3", definition: "Definition 3" },
+        // ...
+      ];
 
       function displayFlashcard() {
         const word = words[currentIndex].word;
@@ -114,13 +47,13 @@
         flashcard.classList.toggle("toggled");
       });
 
-      nextButton.addEventListener("click", function () {
-        currentIndex = (currentIndex + 1) % words.length;
+      previousButton.addEventListener("click", function () {
+        currentIndex = (currentIndex + words.length - 1) % words.length;
         displayFlashcard();
       });
 
-      prevButton.addEventListener("click", function () {
-        currentIndex = (currentIndex - 1) % words.length;
+      nextButton.addEventListener("click", function () {
+        currentIndex = (currentIndex + 1) % words.length;
         displayFlashcard();
       });
 
