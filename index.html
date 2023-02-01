@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <title>GRE 1000 Vocabulary</title>
+    <h1>GRE 1000 Vocabulary</h1>
     <link
       href="https://fonts.googleapis.com/css2?family=Ubuntu&display=swap"
       rel="stylesheet"
@@ -17,7 +19,7 @@
       .flashcard {
         width: 400px;
         height: 200px;
-        background-color: lightgray;
+        background-color: rgb(240, 237, 237);
         display: flex;
         justify-content: center;
         align-items: center;
@@ -29,6 +31,7 @@
 
       .flashcard .word {
         display: block;
+        font-weight: 100;
       }
 
       .flashcard .definition {
@@ -50,7 +53,7 @@
         align-items: center;
       }
 
-      button.next-button {
+      button.next-button, button.prev-button {
         margin-top: 20px;
         padding: 10px 20px;
         background-color: steelblue;
@@ -62,12 +65,12 @@
         transition: all 0.2s ease-in-out;
       }
 
-      button.next-button:hover {
+      button.next-button:hover, button.prev-button:hover {
         background-color: lightblue;
         transform: translateY(-2px);
       }
 
-      button.next-button:active {
+      button.next-button:active, button.prev-button:active {
         transform: translateY(2px);
       }
     </style>
@@ -76,6 +79,8 @@
     <div class="flashcard-container">
       <div id="flashcard-container"></div>
       <button id="next-button" class="next-button">Next</button>
+      <button id="prev-button" class="prev-button">Prev</button>
+
     </div>
 
     <script>
@@ -89,6 +94,7 @@
 
       const flashcardContainer = document.querySelector("#flashcard-container");
       const nextButton = document.querySelector("#next-button");
+      const prevButton = document.querySelector("#prev-button");
 
       let currentIndex = 0;
 
@@ -110,6 +116,11 @@
 
       nextButton.addEventListener("click", function () {
         currentIndex = (currentIndex + 1) % words.length;
+        displayFlashcard();
+      });
+
+      prevButton.addEventListener("click", function () {
+        currentIndex = (currentIndex - 1) % words.length;
         displayFlashcard();
       });
 
