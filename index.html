@@ -4,7 +4,6 @@
     <link
       href="https://fonts.googleapis.com/css2?family=Ubuntu&display=swap"
       rel="stylesheet"
-      title="GRE 1000 Vocabulary"
     />
     <style>
       body {
@@ -18,95 +17,103 @@
       .flashcard {
         width: 400px;
         height: 200px;
-        background-color: white;
-        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+        background-color: lightgray;
         display: flex;
-        flex-direction: column;
         justify-content: center;
         align-items: center;
+        border-radius: 10px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
+        transition: all 0.2s ease-in-out;
+        cursor: pointer;
       }
 
-      .word {
-        font-size: 36px;
-        margin-bottom: 16px;
-      }
-
-      .definition {
-        font-size: 24px;
-        display: none;
-      }
-
-      .show-definition .definition {
+      .flashcard .word {
         display: block;
       }
 
-      .toggle-definition-button {
-        font-size: 24px;
-        background-color: lightgray;
-        padding: 8px 16px;
+      .flashcard .definition {
+        display: none;
+        text-align: center;
+      }
+
+      .flashcard.toggled .word {
+        display: none;
+      }
+
+      .flashcard.toggled .definition {
+        display: block;
+      }
+
+      .flashcard-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      button.next-button {
+        margin-top: 20px;
+        padding: 10px 20px;
+        background-color: steelblue;
+        color: white;
         border: none;
-        border-radius: 4px;
+        border-radius: 10px;
+        font-size: 16px;
         cursor: pointer;
-        margin-top: 16px;
+        transition: all 0.2s ease-in-out;
+      }
+
+      button.next-button:hover {
+        background-color: lightblue;
+        transform: translateY(-2px);
+      }
+
+      button.next-button:active {
+        transform: translateY(2px);
       }
     </style>
   </head>
   <body>
-    <div id="flashcard-container"></div>
-
-    <button id="next-button">Next</button>
+    <div class="flashcard-container">
+      <div id="flashcard-container"></div>
+      <button id="next-button" class="next-button">Next</button>
+    </div>
 
     <script>
       const words = [
-        { word: "Serendipity", definition: "The occurrence of happy events by chance." },
-        { word: "Eloquence", definition: "Fluent or persuasive speaking or writing." },
-        { word: "Perseverance", definition: "Steadfastness in doing something despite difficulty or delay in achieving success." }
+        { word: "prevaricator", definition: "a liar or deceiver" },
+        { word: "mendacity", definition: "the state of being untruthful" },
+        { word: "fastidious", definition: "having high standards or being meticulous" },
+        { word: "equanimity", definition: "calmness and composure, especially in difficult situations" },
+        { word: "perfidious", definition: "treacherous or faithless" }
       ];
-      const flashcardContainer = document.getElementById("flashcard-container");
-      const nextButton = document.getElementById("next-button");
+
+      const flashcardContainer = document.querySelector("#flashcard-container");
+      const nextButton = document.querySelector("#next-button");
 
       let currentIndex = 0;
 
-      function createFlashcard(word, definition) {
-        const flashcard = document.createElement("div");
-        flashcard.classList.add("flashcard");
+      function displayFlashcard() {
+        const word = words[currentIndex].word;
+        const definition = words[currentIndex].definition;
+        flashcardContainer.innerHTML = `
+          <div class="flashcard">
+            <div class="word">${word}</div>
+            <div class="definition">${definition}</div>
+          </div>
+        `;
+      }
 
-        const wordElement = document.createElement("div");
-        wordElement.classList.add("word");
-        wordElement.innerText = word;
+      flashcardContainer.addEventListener("click", function () {
+        const flashcard = flashcardContainer.querySelector(".flashcard");
+        flashcard.classList.toggle("toggled");
+      });
 
-        const definitionElement = document.createElement("div");
-        definitionElement.classList.add("definition");
-        definitionElement.innerText = definition;
+      nextButton.addEventListener("click", function () {
+        currentIndex = (currentIndex + 1) % words.length;
+        displayFlashcard();
+      });
 
-        const toggleDefinitionButton = document.createElement("button");
-        toggleDefinitionButton.classList.add("toggle-definition-button");
-        toggleDefinitionButton.innerText = "Toggle Definition";
-        toggleDefinitionButton.addEventListener("click", function() {
-          flashcard.classList.toggle("show-definition");
-        });
-
-        flashcard.appendChild(wordElement);
-        flashcard.appendChild(definitionElement);
-        flashcard.appendChild(toggleDefinitionButton);
-
-return flashcard;
-}
-
-function updateFlashcard() {
-flashcardContainer.innerHTML = "";
-flashcardContainer.appendChild(
-  createFlashcard(words[currentIndex].word, words[currentIndex].definition)
-);
-}
-
-updateFlashcard();
-
-nextButton.addEventListener("click", function() {
-currentIndex = (currentIndex + 1) % words.length;
-updateFlashcard();
-});
-</script>
-</body>
+      displayFlashcard();
+    </script>
+  </body>
 </html>
-
