@@ -40,6 +40,12 @@
       text-align: center;
       font-size: 36px;
       font-weight: bold;
+      cursor: pointer;
+      transition: transform 0.5s ease;
+    }
+
+    .flashcard.flipped {
+      transform: rotateY(180deg);
     }
 
     /* Style for the buttons */
@@ -53,7 +59,7 @@
     button {
       padding: 10px 20px;
       border-radius: 10px;
-      background-color: #333;
+      background-color: blue;
       color: white;
       font-size: 18px;
       border: none;
@@ -72,8 +78,9 @@
 
   <!-- Flashcard container -->
   <div class="flashcard-container">
-    <div class="flashcard">
-      <div id="word-definition"></div>
+    <div class="flashcard" id="flashcard">
+      <div class="front" id="front"></div>
+      <div class="back" id="back"></div>
     </div>
   </div>
 
@@ -90,20 +97,21 @@
       { word: 'abase', definition: 'to lower in rank, status, or reputation' },
       { word: 'abscond', definition: 'to leave secretly and hide, typically to avoid the law' },
       { word: 'accretion', definition: 'an increase by natural growth or addition' },
-      { word: 'adulterate', definition: 'to make impure by adding inferior or undesirable elements' },
-      { word: 'alacrity', definition: 'cheerful readiness, promptness, or willingness' }
-    ];
+      { word: 'adulterate', definition: 'to make impure or weaker by adding inferior ingredients' }
+  ];
 
-    // Initialize current word index
-    let currentIndex = 0;
+  // Keep track of the current index
+let currentIndex = 0;
 
-    // Get references to the elements
-    const wordDefinitionElement = document.getElementById("word-definition");
-    const prevButton = document.getElementById("prev-button");
-    const nextButton = document.getElementById("next-button");
-    // Function to display the current word or definition
+// Get the flashcard, front, and back elements
+const flashcard = document.getElementById("flashcard");
+const front = document.getElementById("front");
+const back = document.getElementById("back");
+
+// Function to display the current word or definition on the front and back of the flashcard
 function displayWordDefinition() {
-  wordDefinitionElement.innerHTML = words[currentIndex].word || words[currentIndex].definition;
+  front.innerHTML = words[currentIndex].word;
+  back.innerHTML = words[currentIndex].definition;
 }
 
 // Function to show the next word or definition
@@ -118,11 +126,21 @@ function showPrev() {
   displayWordDefinition();
 }
 
+// Function to flip the flashcard
+function flip() {
+  flashcard.classList.toggle("flipped");
+}
+
 // Event listeners for the buttons
 nextButton.addEventListener("click", showNext);
 prevButton.addEventListener("click", showPrev);
+flashcard.addEventListener("click", flip);
 
 // Initial display of the first word or definition
 displayWordDefinition();
 </script>
-</body></html>
+</body>
+</html>
+
+
+
