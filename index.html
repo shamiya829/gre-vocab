@@ -1,146 +1,157 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <title>GRE 1000 Vocabulary</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Ubuntu&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        font-family: "Ubuntu", sans-serif;
+      }
 
-<head>
-  <style>
-    /* Style for the navigation bar */
-    .navbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10px 20px;
-      background-color: #333;
-      color: white;
-    }
+      .flashcard {
+        width: 400px;
+        height: 200px;
+        background-color: lightgray;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 10px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
+        transition: all 0.2s ease-in-out;
+        cursor: pointer;
+      }
 
-    .navbar a {
-      color: white;
-      text-decoration: none;
-      margin-right: 20px;
-    }
+      .flashcard .word {
+        display: block;
+      }
 
-    /* Style for the flashcard container */
-    .flashcard-container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
+      .flashcard .definition {
+        display: none;
+        text-align: center;
+      }
 
-    /* Style for the flashcard */
-    .flashcard {
-      width: 500px;
-      height: 300px;
-      background-color: #eee;
-      border-radius: 10px;
-      box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.75);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      font-size: 36px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: transform 0.5s ease;
-    }
+      .flashcard.toggled .word {
+        display: none;
+      }
 
-    .flashcard.flipped {
-      transform: rotateY(180deg);
-    }
+      .flashcard.toggled .definition {
+        display: block;
+      }
 
-    /* Style for the buttons */
-    .buttons {
-      display: flex;
-      justify-content: space-between;
-      width: 500px;
-      margin-top: 20px;
-    }
+      .flashcard-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
 
-    button {
-      padding: 10px 20px;
-      border-radius: 10px;
-      background-color: blue;
-      color: white;
-      font-size: 18px;
-      border: none;
-      cursor: pointer;
-    }
-  </style>
-</head>
+      button.next-button {
+        margin-top: 20px;
+        padding: 10px 20px;
+        background-color: steelblue;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: all 0.2s ease-in-out;
+      }
 
-<body>
-  <!-- Navigation bar -->
-  <div class="navbar">
-    <a href="#">Home</a>
-    <a href="#">About</a>
-    <a href="#">Contact</a>
-  </div>
+      button.next-button:hover {
+        background-color: lightblue;
+        transform: translateY(-2px);
+      }
 
-  <!-- Flashcard container -->
-  <div class="flashcard-container">
-    <div class="flashcard" id="flashcard">
-      <div class="front" id="front"></div>
-      <div class="back" id="back"></div>
+      button.next-button:active {
+        transform: translateY(2px);
+      }
+      ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+}
+
+li {
+  float: left;
+}
+
+li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+/* Change the link color to #111 (black) on hover */
+li a:hover {
+  background-color: #111;
+}
+.active {
+  background-color: #04AA6D;
+}
+
+
+    </style>
+    <!-- <ul style = "position:relative; left:0px; top:-00px;" >
+      <li><a href="default.asp">Home</a></li>
+      <li><a href="news.asp">News</a></li>
+      <li><a href="contact.asp">Contact</a></li>
+      <li><a href="about.asp">About</a></li>
+    </ul> -->
+  </head>
+  <body>
+    <div class="flashcard-container">
+      <div id="flashcard-container"></div>
+      <button id="next-button" class="next-button">Next</button>
     </div>
-  </div>
 
-  <!-- Buttons -->
-  <div class="buttons">
-    <button id="prev-button">Previous</button>
-    <button id="next-button">Next</button>
-  </div>
+    <script>
+      const words = [
+        { word: "prevaricator", definition: "a liar or deceiver" },
+        { word: "mendacity", definition: "the state of being untruthful" },
+        { word: "fastidious", definition: "having high standards or being meticulous" },
+        { word: "equanimity", definition: "calmness and composure, especially in difficult situations" },
+        { word: "perfidious", definition: "treacherous or faithless" }
+      ];
 
-  <!-- Script for the flashcards -->
-  <script>
-    // List of words and definitions
-    const words = [
-      { word: 'abase', definition: 'to lower in rank, status, or reputation' },
-      { word: 'abscond', definition: 'to leave secretly and hide, typically to avoid the law' },
-      { word: 'accretion', definition: 'an increase by natural growth or addition' },
-      { word: 'adulterate', definition: 'to make impure or weaker by adding inferior ingredients' }
-  ];
+      const flashcardContainer = document.querySelector("#flashcard-container");
+      const nextButton = document.querySelector("#next-button");
 
-  // Keep track of the current index
-let currentIndex = 0;
+      let currentIndex = 0;
 
-// Get the flashcard, front, and back elements
-const flashcard = document.getElementById("flashcard");
-const front = document.getElementById("front");
-const back = document.getElementById("back");
+      function displayFlashcard() {
+        const word = words[currentIndex].word;
+        const definition = words[currentIndex].definition;
+        flashcardContainer.innerHTML = `
+          <div class="flashcard">
+            <div class="word">${word}</div>
+            <div class="definition">${definition}</div>
+          </div>
+        `;
+      }
 
-// Function to display the current word or definition on the front and back of the flashcard
-function displayWordDefinition() {
-  front.innerHTML = words[currentIndex].word;
-  back.innerHTML = words[currentIndex].definition;
-}
+      flashcardContainer.addEventListener("click", function () {
+        const flashcard = flashcardContainer.querySelector(".flashcard");
+        flashcard.classList.toggle("toggled");
+      });
 
-// Function to show the next word or definition
-function showNext() {
-  currentIndex = (currentIndex + 1) % words.length;
-  displayWordDefinition();
-}
+      nextButton.addEventListener("click", function () {
+        currentIndex = (currentIndex + 1) % words.length;
+        displayFlashcard();
+      });
 
-// Function to show the previous word or definition
-function showPrev() {
-  currentIndex = (currentIndex + words.length - 1) % words.length;
-  displayWordDefinition();
-}
-
-// Function to flip the flashcard
-function flip() {
-  flashcard.classList.toggle("flipped");
-}
-
-// Event listeners for the buttons
-nextButton.addEventListener("click", showNext);
-prevButton.addEventListener("click", showPrev);
-flashcard.addEventListener("click", flip);
-
-// Initial display of the first word or definition
-displayWordDefinition();
-</script>
-</body>
+      displayFlashcard();
+    </script>
+  </body>
 </html>
-
 
 
