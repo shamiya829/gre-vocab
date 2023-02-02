@@ -1,63 +1,128 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GRE 1000 Vocabulary</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Ubuntu&display=swap" rel="stylesheet">
-  </head>
-  <body>
-    <nav>
-      <a href="#">Home</a>
-      <a href="#">Practice</a>
-      <h1>GRE 1000 Vocabulary</h1>
-    </nav>
-    <div id="flashcard-container"></div>
-    <div id="button-container">
-      <button id="previous-button">Previous</button>
-      <button id="next-button">Next</button>
+
+<head>
+  <style>
+    /* Style for the navigation bar */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+      background-color: #333;
+      color: white;
+    }
+
+    .navbar a {
+      color: white;
+      text-decoration: none;
+      margin-right: 20px;
+    }
+
+    /* Style for the flashcard container */
+    .flashcard-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    /* Style for the flashcard */
+    .flashcard {
+      width: 500px;
+      height: 300px;
+      background-color: #eee;
+      border-radius: 10px;
+      box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.75);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      font-size: 36px;
+      font-weight: bold;
+    }
+
+    /* Style for the buttons */
+    .buttons {
+      display: flex;
+      justify-content: space-between;
+      width: 500px;
+      margin-top: 20px;
+    }
+
+    button {
+      padding: 10px 20px;
+      border-radius: 10px;
+      background-color: #333;
+      color: white;
+      font-size: 18px;
+      border: none;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Navigation bar -->
+  <div class="navbar">
+    <a href="#">Home</a>
+    <a href="#">About</a>
+    <a href="#">Contact</a>
+  </div>
+
+  <!-- Flashcard container -->
+  <div class="flashcard-container">
+    <div class="flashcard">
+      <div id="word-definition"></div>
     </div>
+  </div>
 
-    <script>
-      const flashcardContainer = document.querySelector("#flashcard-container");
-      const previousButton = document.querySelector("#previous-button");
-      const nextButton = document.querySelector("#next-button");
-      let currentIndex = 0;
-      const words = [
-        { word: "Word 1", definition: "Definition 1" },
-        { word: "Word 2", definition: "Definition 2" },
-        { word: "Word 3", definition: "Definition 3" },
-        // ...
-      ];
+  <!-- Buttons -->
+  <div class="buttons">
+    <button id="prev-button">Previous</button>
+    <button id="next-button">Next</button>
+  </div>
 
-      function displayFlashcard() {
-        const word = words[currentIndex].word;
-        const definition = words[currentIndex].definition;
-        flashcardContainer.innerHTML = `
-          <div class="flashcard">
-            <div class="word">${word}</div>
-            <div class="definition">${definition}</div>
-          </div>
-        `;
-      }
+  <!-- Script for the flashcards -->
+  <script>
+    // List of words and definitions
+    const words = [
+      { word: 'abase', definition: 'to lower in rank, status, or reputation' },
+      { word: 'abscond', definition: 'to leave secretly and hide, typically to avoid the law' },
+      { word: 'accretion', definition: 'an increase by natural growth or addition' },
+      { word: 'adulterate', definition: 'to make impure by adding inferior or undesirable elements' },
+      { word: 'alacrity', definition: 'cheerful readiness, promptness, or willingness' }
+    ];
 
-      flashcardContainer.addEventListener("click", function () {
-        const flashcard = flashcardContainer.querySelector(".flashcard");
-        flashcard.classList.toggle("toggled");
-      });
+    // Initialize current word index
+    let currentIndex = 0;
 
-      previousButton.addEventListener("click", function () {
-        currentIndex = (currentIndex + words.length - 1) % words.length;
-        displayFlashcard();
-      });
+    // Get references to the elements
+    const wordDefinitionElement = document.getElementById("word-definition");
+    const prevButton = document.getElementById("prev-button");
+    const nextButton = document.getElementById("next-button");
+    // Function to display the current word or definition
+function displayWordDefinition() {
+  wordDefinitionElement.innerHTML = words[currentIndex].word || words[currentIndex].definition;
+}
 
-      nextButton.addEventListener("click", function () {
-        currentIndex = (currentIndex + 1) % words.length;
-        displayFlashcard();
-      });
+// Function to show the next word or definition
+function showNext() {
+  currentIndex = (currentIndex + 1) % words.length;
+  displayWordDefinition();
+}
 
-      displayFlashcard();
-    </script>
-  </body>
-</html>
+// Function to show the previous word or definition
+function showPrev() {
+  currentIndex = (currentIndex + words.length - 1) % words.length;
+  displayWordDefinition();
+}
+
+// Event listeners for the buttons
+nextButton.addEventListener("click", showNext);
+prevButton.addEventListener("click", showPrev);
+
+// Initial display of the first word or definition
+displayWordDefinition();
+</script>
+</body></html>
